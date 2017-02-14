@@ -1,6 +1,9 @@
 <?php
 require 'init.php';
-if ($base_path == '') return '';
+if ($base_path == ''){
+    echo 'Host Error';
+    exit;
+}
 
 $dir = 'data/' . $base_path ;
 $return['status'] = 0;

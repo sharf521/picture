@@ -14,7 +14,7 @@ define('ROOT', dirname(__FILE__) . '/');
 require ROOT . 'core/config.php';
 $base_path = '';
 foreach ($config['site'] as $site) {
-    if ($site['domain'] == strtolower($_SERVER['HTTP_HOST'])) {
+    if ($site['domain'] == $_SERVER['HTTP_HOST']) {
         $base_path = $site['dir'] . '/';
         break;
     }
