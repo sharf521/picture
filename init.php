@@ -2,12 +2,13 @@
 error_reporting(E_ALL & ~E_NOTICE);
 //error_reporting(7);
 session_cache_limiter('public');//缓存必须设置session
+ini_set('session.cookie_domain', '.a.com');
 session_start();
 date_default_timezone_set('Asia/Shanghai');//时区配置
 header('Content-type: text/html; charset=utf-8');
 header('X-Powered-By: JAVA');
 set_time_limit(30);//# 设置执行时间
-
+//require 'vendor/autoload.php';
 
 define('ROOT', dirname(__FILE__) . '/');
 //define('ROOT', dirname($_SERVER['SCRIPT_FILENAME']).'/');
