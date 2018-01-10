@@ -3,7 +3,6 @@
 // /index.php/data/files/0/shop_350/201405/13996256741819.jpg_50x50.jpg
 //png强制放大，jpg不放大
 require 'init.php';
-
 $_path = (isset($_SERVER['PATH_INFO'])) ? $_SERVER['PATH_INFO'] : @getenv('PATH_INFO');
 if (empty($_path)) {
     return;
@@ -11,7 +10,7 @@ if (empty($_path)) {
 $_path = substr($_path, 1);
 $pic = 'data/' . $base_path . strtolower($_path);
 //(strpos($pic,'_')!==false)
-if (preg_match_all("/(.*)_(\d+)x(\d+)\.(jpg|jpeg|gif|bmp|png)$/", $pic, $arr)) {
+if (preg_match_all("/(.*)_(\d+)x(\d+)\.(jpg|png)$/", $pic, $arr)) {
     $pic = $arr[1][0];
     $w = (int)$arr[2][0];
     $h = (int)$arr[3][0];
@@ -21,24 +20,25 @@ if (preg_match_all("/(.*)_(\d+)x(\d+)\.(jpg|jpeg|gif|bmp|png)$/", $pic, $arr)) {
             $w = $h = 200;
         }
         check_file($pic);
-        $newfile = get_cache_name($pic, $w, $h, $type);
-        if (!file_exists($newfile)) {
-            include ROOT . 'core/image.class.php';
-            $imgs = new image($pic);
-            $return['thumb'] = $imgs->thumb($newfile, $w, $h, $type);
-            if (empty($return['thumb'])) {
-                $newfile = $return['file'];//原图片一样
-            } else {
-                $newfile = $return['thumb'];
+        $newFile = get_cache_name($pic, $w, $h, $type);
+        if (!file_exists($newFile)) {
+            require 'vendor/autoload.php';
+            $editor = \Grafika\Grafika::createEditor();
+            $editor->open($image1 , $pic); // 打开yanying.jpg并且存放到$image1
+            if($type){
+                $editor->resizeFill($image1 , $w,$h);
+            }else{
+                $editor->resizeFit($image1 ,$w,$h);
             }
+            $editor->save($image1 , $newFile);
         }
     }
 }
-if (empty($newfile)) {
+if (empty($newFile)) {
     check_file($pic);
-    $newfile = $pic;
+    $newFile = $pic;
 }
-$image = file_get_contents($newfile);
+$image = file_get_contents($newFile);
 
 /*
 header("Expires: ".gmdate ("D, d M Y H:i:s", time() + 3600 * 24 * 15 )." GMT");  //设置15天过期
@@ -82,9 +82,9 @@ function check_file($pic)
 function get_cache_name($pic, $w, $h, $type)
 {
     $time = filemtime($pic);
-    $newfilepath = ROOT . 'cache_' . dirname($pic) . '/';
-    if (!file_exists($newfilepath) && !mkdir($newfilepath, 0777, true)) {
-        die('无法创建缓存文件夹' . $newfilepath);
+    $newFilePath = ROOT . 'cache_' . dirname($pic) . '/';
+    if (!file_exists($newFilePath) && !mkdir($newFilePath, 0777, true)) {
+        die('无法创建缓存文件夹' . $newFilePath);
     }
-    return $newfilepath . "{$time}_{$w}-{$type}-{$h}_" . basename($pic);
+    return $newFilePath . "{$time}_{$w}-{$type}-{$h}_" . basename($pic);
 }
