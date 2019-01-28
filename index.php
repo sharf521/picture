@@ -10,7 +10,7 @@ if (empty($_path)) {
 $_path = substr($_path, 1);
 $pic = 'data/' . $base_path . $_path;
 //(strpos($pic,'_')!==false)
-if (preg_match_all("/(.*)_(\d+)x(\d+)\.(jpg|png)$/", $pic, $arr)) {
+if (preg_match_all("/(.*)_(\d+)x(\d+)\.(jpg|png)$/i", $pic, $arr)) {
     $pic = $arr[1][0];
     $w = (int)$arr[2][0];
     $h = (int)$arr[3][0];
