@@ -8,7 +8,7 @@ if (empty($_path)) {
     return;
 }
 $_path = substr($_path, 1);
-$pic = 'data/' . $base_path . strtolower($_path);
+$pic = 'data/' . $base_path . $_path;
 //(strpos($pic,'_')!==false)
 if (preg_match_all("/(.*)_(\d+)x(\d+)\.(jpg|png)$/", $pic, $arr)) {
     $pic = $arr[1][0];
