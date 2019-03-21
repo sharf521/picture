@@ -1,7 +1,7 @@
 {
     "require": {
-        "kosinix/grafika": "dev-master",
-        "intervention/image": "^2.4"
+        "intervention/image": "^2.4",
+        "kosinix/grafika": "^2.0"
     },
     "repositories": {
         "packagist": {
