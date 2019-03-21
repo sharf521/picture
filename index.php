@@ -23,14 +23,17 @@ if (preg_match_all("/(.*)_(\d+)x(\d+)\.(jpg|png)$/i", $pic, $arr)) {
         $newFile = get_cache_name($pic, $w, $h, $type);
         if (!file_exists($newFile)) {
             require 'vendor/autoload.php';
-            $editor = \Grafika\Grafika::createEditor();
-            $editor->open($image1 , $pic); // 打开yanying.jpg并且存放到$image1
             if($type){
-                $editor->resizeFill($image1 , $w,$h);
+                $manager = new \Intervention\Image\ImageManager(array('driver' => 'gd'));
+                $image = $manager->make($pic)->fit($w, $h);
+                $image->save($newFile);
             }else{
+                $editor = \Grafika\Grafika::createEditor();
+                $editor->open($image1 , $pic); // 打开yanying.jpg并且存放到$image1
                 $editor->resizeFit($image1 ,$w,$h);
+                //$editor->resizeFill($image1 , $w,$h);  固定大小
+                $editor->save($image1 , $newFile);
             }
-            $editor->save($image1 , $newFile);
         }
     }
 }
