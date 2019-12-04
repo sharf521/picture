@@ -26,6 +26,7 @@ if ($_FILES) {
         $file = $path . '/' . $name;// fenecll/sdfdfd/a/aa.gif
         if (move_uploaded_file($tmp_name, $file)) {
             $return['status'] = 1;
+            $return['path']= $_path . '/' . $name;
             $return['file'] ='http://'.$_SERVER['HTTP_HOST'].$_path . '/' . $name;    //不包含fenecll
         } else {
             $return['error'] = 'Upload file failed';
