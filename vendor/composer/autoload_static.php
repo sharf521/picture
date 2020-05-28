@@ -9,9 +9,14 @@ class ComposerStaticInit677318eb85c8ae73360d05528a3aacff
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '7c2cd417f69034753d8396924ed91793' => __DIR__ . '/..' . '/sharf/myphp/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'System\\' => 7,
+        ),
         'P' => 
         array (
             'Psr\\Http\\Message\\' => 17,
@@ -25,9 +30,21 @@ class ComposerStaticInit677318eb85c8ae73360d05528a3aacff
             'GuzzleHttp\\Psr7\\' => 16,
             'Grafika\\' => 8,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
+        'A' => 
+        array (
+            'App\\' => 4,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'System\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sharf/myphp/src',
+        ),
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
@@ -43,6 +60,14 @@ class ComposerStaticInit677318eb85c8ae73360d05528a3aacff
         'Grafika\\' => 
         array (
             0 => __DIR__ . '/..' . '/kosinix/grafika/src/Grafika',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
+        'App\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app',
         ),
     );
 

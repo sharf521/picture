@@ -8,7 +8,12 @@ if (empty($_path)) {
     return;
 }
 $_path = substr($_path, 1);
-$pic = 'data/' . $base_path . $_path;
+if($base_path=='picture/' && substr($_path,0,14)=='data/user-img/'){
+    $pic = $_path;
+}else{
+    $pic = 'data/' . $base_path . $_path;
+}
+$newFile='';
 //(strpos($pic,'_')!==false)
 if (preg_match_all("/(.*)_(\d+)x(\d+)\.(jpg|png)$/i", $pic, $arr)) {
     $pic = $arr[1][0];
@@ -35,28 +40,34 @@ if (preg_match_all("/(.*)_(\d+)x(\d+)\.(jpg|png)$/i", $pic, $arr)) {
                 $editor->save($image1 , $newFile);
             }
         }
+        showImage($newFile);
     }
 }
 if (empty($newFile)) {
     check_file($pic);
     $newFile = $pic;
+    showImage($newFile);
 }
-$image = file_get_contents($newFile);
 
-/*
-header("Expires: ".gmdate ("D, d M Y H:i:s", time() + 3600 * 24 * 15 )." GMT");  //设置15天过期
-header("Last-Modified: " . gmdate ("D, d M Y H:i:s", time()) . " GMT"); // always modified
-header("Cache-Control: public"); // HTTP/1.1
-header("Pragma: Pragma");   //Pragma: cache       // HTTP/1.0
-*/
-if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
-    // if the browser has a cached version of this image, send 304
-    header('Last-Modified: ' . $_SERVER['HTTP_IF_MODIFIED_SINCE'], true, 304);
+function showImage($newFile)
+{
+    $image = file_get_contents($newFile);
+
+    /*
+    header("Expires: ".gmdate ("D, d M Y H:i:s", time() + 3600 * 24 * 15 )." GMT");  //设置15天过期
+    header("Last-Modified: " . gmdate ("D, d M Y H:i:s", time()) . " GMT"); // always modified
+    header("Cache-Control: public"); // HTTP/1.1
+    header("Pragma: Pragma");   //Pragma: cache       // HTTP/1.0
+    */
+    if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+        // if the browser has a cached version of this image, send 304
+        header('Last-Modified: ' . $_SERVER['HTTP_IF_MODIFIED_SINCE'], true, 304);
+        exit;
+    }
+    header("Content-type: image/JPEG", true);
+    echo $image;
     exit;
 }
-header("Content-type: image/JPEG", true);
-echo $image;
-
 
 function check_file($pic)
 {

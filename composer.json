@@ -1,12 +1,19 @@
 {
-    "require": {
-        "intervention/image": "^2.4",
-        "kosinix/grafika": "^2.0"
-    },
-    "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "https://packagist.phpcomposer.com"
-        }
+  "require": {
+    "intervention/image": "^2.4",
+    "kosinix/grafika": "^2.0",
+    "sharf/myphp": "dev-master",
+    "firebase/php-jwt": "^5.0"
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://mirrors.aliyun.com/composer/"
     }
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  }
 }
