@@ -96,7 +96,7 @@ function check_file($pic)
 function get_cache_name($pic, $w, $h, $type)
 {
     $time = filemtime($pic);
-    $newFilePath = ROOT . 'cache_' . dirname($pic) . '/';
+    $newFilePath = ROOT . '/cache_' . dirname($pic) . '/';
     if (!file_exists($newFilePath) && !mkdir($newFilePath, 0777, true)) {
         die('无法创建缓存文件夹' . $newFilePath);
     }

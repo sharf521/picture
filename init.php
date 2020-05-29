@@ -13,9 +13,8 @@ set_time_limit(30);//# 设置执行时间
 session_start();
 //require 'vendor/autoload.php';
 
-define('ROOT', dirname(__FILE__) . '/');
-//define('ROOT', dirname($_SERVER['SCRIPT_FILENAME']).'/');
-require ROOT . 'core/config.php';
+define('ROOT', __DIR__);
+require ROOT . '/core/config.php';
 $base_path = '';
 foreach ($config['site'] as $site) {
     if ($site['domain'] == strtolower($_SERVER['HTTP_HOST'])) {
