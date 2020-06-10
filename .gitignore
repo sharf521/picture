@@ -1,3 +1,4 @@
+/vendor
 /core/config.php
 /.idea
 /app/Config.php
