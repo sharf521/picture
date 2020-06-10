@@ -91,11 +91,12 @@ class UploadController extends MemberApiController
 
     public function del(Request $request)
     {
-        $id   = (int)$request->get('id');
+        $id   = (int)$request->id;
         $Log = new UploadLog();
         $Log = $Log->find($id);
         if ($Log->is_exist && $Log->user_id == $this->uid) {
             $Log->status = -1;
+            $Log->deleted_at=time();
             $Log->save();
             $this->returnSuccess();
         } else {
