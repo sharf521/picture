@@ -34,14 +34,15 @@ class UploadController extends MemberApiController
         if($_FILES[$file]['size']<=0){
             return $this->_error('error');
         }
-        $type = $_REQUEST['type'];
+        $type = (new Request())->type;
         $user_id = $this->uid;
-        $base_path="/data/user-img/".ceil($user_id/2000)."/".$user_id."/";
-        $name = time() . rand(1000, 9000);
-        $path=$base_path.date('Ym').'/';
+        $path="/data/user-img/".ceil($user_id/2000)."/".$user_id."/".date('Ym').'/';
+        $name = time() . rand(100, 999);
         if ($type == 'headImgUrl') {
+            $path="/data/user-img/".ceil($user_id/2000)."/".$user_id."/";
             $name = 'face';
-            $path=$base_path;
+        }elseif($type=='category'){
+            $path="/data/user-img/category/";
         }
         $_path = ROOT  . $path;
         if (!file_exists($_path)) {
