@@ -46,6 +46,9 @@ class Token
     public static function getLoginUid()
     {
         $token=htmlspecialchars($_SERVER['HTTP_AUTHORIZATION']);
+        if(empty($token)){
+            $token=htmlspecialchars($_GET['token']);
+        }
         $uid=self::getUid($token);
         if($uid>0){
             return $uid;

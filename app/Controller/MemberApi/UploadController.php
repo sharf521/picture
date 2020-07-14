@@ -16,6 +16,7 @@ class UploadController extends MemberApiController
 
     public function save()
     {
+        header('Access-Control-Allow-Origin:*');
         $data=$this->saveFile('file');
         $this->returnSuccess($data);
     }
@@ -81,12 +82,24 @@ class UploadController extends MemberApiController
             $UploadLog->status  = 1;
             $id                 = $UploadLog->save(true);
             $path               = 'http://' . $_SERVER['HTTP_HOST'] . $path;
-            $data               = array(
-                'id'        => $id,
-                'url'       => $path,
-                'thumb_url' => $path . "_150X150.png"
-            );
-            return $data;
+            if($type=='chat'){
+                $data = array(
+                    'code' => '0',
+                    'data'=>array(
+                        'name' => $filename,
+                        'src' => $path
+                    )
+                );
+                echo json_encode($data);
+                exit;
+            }else{
+                $data               = array(
+                    'id'        => $id,
+                    'url'       => $path,
+                    'thumb_url' => $path . "_150X150.png"
+                );
+                return $data;
+            }
         }
     }
 
