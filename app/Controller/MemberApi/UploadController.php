@@ -134,7 +134,7 @@ class UploadController extends MemberApiController
         $type = (new Request())->type;
         if($type=='chat'){
             $data = array(
-                'code' => '0',
+                'code' => '-1',
                 'msg'  => $msg
             );
             echo json_encode($data);
