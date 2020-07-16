@@ -35,6 +35,9 @@ class UploadController extends MemberApiController
             return $this->_error('error');
         }
         $type = (new Request())->type;
+        if($type=='chat'){
+            header('Access-Control-Allow-Origin:*');
+        }
         $user_id = $this->uid;
         $path="/data/user-img/".ceil($user_id/2000)."/".$user_id."/".date('Ym').'/';
         $name = time() . rand(100, 999);
@@ -86,7 +89,6 @@ class UploadController extends MemberApiController
             $id                 = $UploadLog->save(true);
             $path               = 'http://' . $_SERVER['HTTP_HOST'] . $path;
             if($type=='chat'){
-                header('Access-Control-Allow-Origin:*');
                 $data = array(
                     'code' => '0',
                     'data'=>array(
@@ -129,6 +131,16 @@ class UploadController extends MemberApiController
 
     private function _error($msg = '')
     {
-        $this->returnError($msg);
+        $type = (new Request())->type;
+        if($type=='chat'){
+            $data = array(
+                'code' => '0',
+                'msg'  => $msg
+            );
+            echo json_encode($data);
+            exit;
+        }else{
+            $this->returnError($msg);
+        }
     }
 }
