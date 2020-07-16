@@ -43,6 +43,8 @@ class UploadController extends MemberApiController
             $name = 'face';
         }elseif($type=='category'){
             $path="/data/user-img/category/";
+        }elseif ($type=='chat'){
+            $path="/data/user-img/chat/".date('Ym').'/';
         }
         $_path = ROOT  . $path;
         if (!file_exists($_path)) {
@@ -58,13 +60,15 @@ class UploadController extends MemberApiController
         }
         $ext = $this->getExt($_FILES[$file]['name']);
         if ($_FILES['file']['name'] != '') {
-            if (function_exists('exif_imagetype')) {
-                if (exif_imagetype($_FILES[$file]['tmp_name']) < 1) {
-                    return $this->_error('not a image file');
-                }
-            } else {
-                if (!in_array($ext, array(".gif", ".png", ".jpg", ".jpeg", ".bmp"))) {
-                    return $this->_error('type error');
+            if($type!='chat'){
+                if (function_exists('exif_imagetype')) {
+                    if (exif_imagetype($_FILES[$file]['tmp_name']) < 1) {
+                        return $this->_error('not a image file');
+                    }
+                } else {
+                    if (!in_array($ext, array(".gif", ".png", ".jpg", ".jpeg", ".bmp"))) {
+                        return $this->_error('type error');
+                    }
                 }
             }
         }
