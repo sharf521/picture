@@ -2,6 +2,9 @@
 
 namespace App\Controller\MemberApi;
 
+use App\Helper;
+use OSS\Core\OssException;
+use OSS\OssClient;
 use System\Lib\Request;
 use App\Model\UploadLog;
 
@@ -79,33 +82,60 @@ class UploadController extends MemberApiController
         if (!move_uploaded_file($_FILES[$file]['tmp_name'], $_path . $filename)) {
             $this->_error('can not move to path');
         } else {
-            $path               = $path . $filename;
-            $UploadLog          = new UploadLog();
-            $UploadLog->user_id = $user_id;
-            $UploadLog->path    = $path;
-            $UploadLog->type    = $_FILES['file']['type'];
-            $UploadLog->module  = $type;
-            $UploadLog->status  = 1;
-            $id                 = $UploadLog->save(true);
-            $path               = 'http://' . $_SERVER['HTTP_HOST'] . $path;
-            if($type=='chat'){
+            $path          = $path . $filename;
+            $log           = new UploadLog();
+            $log->user_id  = $user_id;
+            $log->path     = $path;
+//            $log->type     = $_FILES['file']['type'];
+            $log->module   = $type;
+            $log->location = 1;
+            $log->status   = 1;
+            $id            = $log->save(true);
+            if ($log->location == 0) {
+                $full_path = 'http://' . $_SERVER['HTTP_HOST'] . $path;
+                $thumb_url = $full_path . "_150X150.png";
+            } else {
+                $full_path = 'http://cdn.5-58.com' . $this->saveOSS($path);
+                $thumb_url = $full_path.'?x-oss-process=image/resize,m_fill,h_150,w_150';
+            }
+            if ($type == 'chat') {
                 $data = array(
                     'code' => '0',
-                    'data'=>array(
+                    'data' => array(
                         'name' => $filename,
-                        'src' => $path
+                        'src'  => $full_path
                     )
                 );
                 echo json_encode($data);
-                exit;
-            }else{
-                $data               = array(
+            } else {
+                $data = array(
                     'id'        => $id,
-                    'url'       => $path,
-                    'thumb_url' => $path . "_150X150.png"
+                    'url'       => $full_path,
+                    'thumb_url' => $thumb_url,
                 );
                 return $data;
             }
+        }
+    }
+
+    private function saveOSS($path)
+    {
+        $accessKeyId     = "LTAI4GAMKMGTSYB8nUWMa57c";
+        $accessKeySecret = "mIl2zRlpju4O8Nox6pYshAiiyGpGqK";
+        $endpoint        = "http://oss-cn-hangzhou.aliyuncs.com";
+        $bucket          = "5-58";
+        try {
+            $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
+            $file_name = substr($path, 6);//去除/data
+            $file_path = substr($path, 1);//去除/
+            if(strpos($_SERVER['HTTP_HOST'],'test.cn')!==false){
+                $file_name='test/'.$file_name;
+            }
+            $info      = $ossClient->uploadFile($bucket, $file_name, $file_path);
+            $arr       = parse_url($info['oss-request-url']);
+            return $arr['path'];
+        } catch (OssException $e) {
+            $this->returnError($e->getMessage());
         }
     }
 
