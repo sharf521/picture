@@ -2,6 +2,7 @@
 
 namespace App\Controller\MemberApi;
 
+use App\Config;
 use App\Helper;
 use OSS\Core\OssException;
 use OSS\OssClient;
@@ -95,7 +96,7 @@ class UploadController extends MemberApiController
                 $full_path = 'http://' . $_SERVER['HTTP_HOST'] . $path;
                 $thumb_url = $full_path . "_150X150.png";
             } else {
-                $full_path = 'http://cdn.5-58.com' . $this->saveOSS($path);
+                $full_path = Config::$oss['domain'] . $this->saveOSS($path);
                 $thumb_url = $full_path.'?x-oss-process=image/resize,m_fill,h_150,w_150';
             }
             if ($type == 'chat') {
@@ -120,10 +121,10 @@ class UploadController extends MemberApiController
 
     private function saveOSS($path)
     {
-        $accessKeyId     = "LTAI4GAMKMGTSYB8nUWMa57c";
-        $accessKeySecret = "mIl2zRlpju4O8Nox6pYshAiiyGpGqK";
-        $endpoint        = "http://oss-cn-hangzhou.aliyuncs.com";
-        $bucket          = "5-58";
+        $accessKeyId     = Config::$oss['keyId'];
+        $accessKeySecret = Config::$oss['keySecret'];
+        $endpoint        = Config::$oss['endpoint'];
+        $bucket          = Config::$oss['bucket'];
         try {
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
             $file_name = substr($path, 6);//去除/data

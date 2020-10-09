@@ -14,4 +14,12 @@ class _Config
         'charset'  => 'utf8mb4',
         'dbfix'    => ''
     );
+
+    public static $oss = array(
+        'endpoint'  => 'http://oss-cn-hangzhou.aliyuncs.com',
+        'bucket'    => '5-58',
+        'keyId'     => '',
+        'keySecret' => '',
+        'domain'    => 'http://cdn.5-58.com'
+    );
 }
