@@ -48,6 +48,8 @@ class UploadController extends MemberApiController
         if ($type == 'headImgUrl') {
             $path="/data/user-img/".ceil($user_id/2000)."/".$user_id."/";
             $name = 'face';
+        }elseif($type=='region'){
+            $path="/data/user-img/region/";
         }elseif($type=='category'){
             $path="/data/user-img/category/";
         }elseif ($type=='chat'){
