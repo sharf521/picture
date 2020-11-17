@@ -109,7 +109,8 @@ class UploadController extends MemberApiController
                         'src'  => $full_path
                     )
                 );
-                echo json_encode($data);
+                echo  json_encode($data);
+                exit;
             } else {
                 $data = array(
                     'id'        => $id,
