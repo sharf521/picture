@@ -27,10 +27,10 @@ if ($_FILES) {
         if (move_uploaded_file($tmp_name, $file)) {
             $return['status'] = 1;
             $return['path']= $_path . '/' . $name;
-            //$return['file'] ='http://'.$_SERVER['HTTP_HOST'].$_path . '/' . $name;    //不包含fenecll
+            $return['file'] ='http://'.$_SERVER['HTTP_HOST'].$_path . '/' . $name;    //不包含fenecll
 
-            require 'vendor/autoload.php';
-            $return['file'] = \App\Config::$oss['domain'] .saveOSS($return['path']);
+            //require 'vendor/autoload.php';
+            //$return['file'] = \App\Config::$oss['domain'] .saveOSS($return['path']);
         } else {
             $return['error'] = 'Upload file failed';
         }
