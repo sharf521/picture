@@ -99,7 +99,11 @@ class UploadController extends MemberApiController
                 $thumb_url = $full_path . "_150X150.png";
             } else {
                 $full_path = Config::$oss['domain'] . $this->saveOSS($path);
-                $thumb_url = $full_path.'?x-oss-process=image/resize,m_fill,h_150,w_150';
+                if ($type == 'headImgUrl') {
+                    $thumb_url = $full_path.'?'.rand(1,999).'&x-oss-process=image/resize,m_fill,h_150,w_150';
+                }else{
+                    $thumb_url = $full_path.'?x-oss-process=image/resize,m_fill,h_150,w_150';
+                }
             }
             if ($type == 'chat') {
                 $data = array(
